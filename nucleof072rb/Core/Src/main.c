@@ -36,6 +36,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define ADC_MAX_NUM 1023
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -92,17 +93,28 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
+  uint8_t tx_buf[3] = {0x08, 0x00, 0x00};
+  uint8_t rx_buf[3] = {0x00, 0x00, 0x00};
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	HAL_GPIO_WritePin(GPIOB, 8, GPIO_PIN_SET);
+	HAL_SPI_TransmitReceive(&hspi1, tx_buf, rx_buf, 3, HAL_MAX_DELAY);
+	HAL_GPIO_WritePin(GPIOB, 8, GPIO_PIN_RESET);
+
+	uint16_t sig = (rx_buf[1] << 8) | rx_buf[2];
+	float pulse = 1000 + ((sig * 1000) / ADC_MAX_NUM);
+	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, pulse);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_Delay(10);
+	HAL_Delay(10);
   }
   /* USER CODE END 3 */
 }
