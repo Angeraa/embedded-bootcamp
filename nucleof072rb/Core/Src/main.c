@@ -38,7 +38,7 @@
 /* USER CODE BEGIN PD */
 #define ADC_MAX_NUM 1023
 #define ADC_BYTE_SIZE 3
-#define MIN_DUTY_CYCLE 1000
+#define MIN_DUTY_CYCLE 3000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -105,9 +105,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	HAL_GPIO_WritePin(GPIOB, 8, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
 	HAL_SPI_TransmitReceive(&hspi1, tx_buf, rx_buf, 3, HAL_MAX_DELAY);
-	HAL_GPIO_WritePin(GPIOB, 8, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
 
 	uint16_t sig = ((rx_buf[1] & 0x03) << 8) | rx_buf[2];
 	uint16_t pulse = MIN_DUTY_CYCLE + ((sig * MIN_DUTY_CYCLE) / ADC_MAX_NUM);
