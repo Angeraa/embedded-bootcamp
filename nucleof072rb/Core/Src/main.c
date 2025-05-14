@@ -38,7 +38,7 @@
 /* USER CODE BEGIN PD */
 #define ADC_MAX_NUM 1023
 #define ADC_BYTE_SIZE 3
-#define MIN_DUTY_CYCLE 3000
+#define MIN_DUTY_CYCLE 3200
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
